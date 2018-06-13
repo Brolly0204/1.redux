@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
-import store from '../store';
-import * as types from '../store/action-types';
+import React, {Component} from 'react';
+import store from '@/store';
+import actions from '@/store/actions/counter';
+import { bindActionCreators } from '@/redux';
 
-function dispatch(type) {
-  store.dispatch({type});
-}
+let newActions = bindActionCreators(actions, store.dispatch);
 
 export default class Counter extends Component {
   constructor() {
@@ -12,22 +11,26 @@ export default class Counter extends Component {
     this.state = { number: store.getState().counter.number };
   }
 
-  componentDidMount() {
-    this.unsubscibe = store.subscribe(() => {
+  componentWillMount() {
+    this.unsubscribe = store.subscribe(() => {
       this.setState({ number: store.getState().counter.number });
     });
   }
 
   componentWillUnmount() {
-    this.unsubscibe();
+    this.unsubscribe();
   }
-
   render() {
     return (
-      <div>
+      <div style={{border: '1px solid green'}}>
         <p>{this.state.number}</p>
-        <button onClick={() => dispatch(types.INCREMENT)}>+</button><br/>
-        <button onClick={() => dispatch(types.DECREMENT)}>-</button>
+        <button onClick={newActions.increment}>+</button>
+        <button onClick={newActions.decrement}>-</button>
+        <button onClick={() => {
+          setTimeout(() => {
+            newActions.increment();
+          }, 1000);
+        }}>异步+</button>
       </div>
     )
   }

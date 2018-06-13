@@ -1,12 +1,17 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
-import Counter from './components/Counter';
-import Counter2 from './components/Counter2';
+import Counter from "./components/Counter";
+import Todos from "./components/Todos";
+import store from '@/store';
+import { Provider } from '@/react-redux';
 
 ReactDOM.render(
-  <div>
+  <Provider store={store}>
+    <React.Fragment>
       <Counter/>
-      <Counter2 />
-  </div>,
-  document.querySelector('#root')
-)
+      <br/>
+      <Todos/>
+    </React.Fragment>
+  </Provider>,
+  document.getElementById('root')
+);
