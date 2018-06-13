@@ -22,7 +22,8 @@ module.exports = {
               "env", "stage-0", "react"
             ]
           }
-        }
+        },
+        exclude: /node_modules/
       }
     ]
   },
