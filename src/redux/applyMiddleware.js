@@ -1,14 +1,15 @@
-import {compose} from "redux/index";
+import {compose} from "@/redux";
 
-export default (...middlewares) => createStore => reducer => {
-  let store = createStore(reducer);
+export default (...middlewares) => createStore => (reducer, preloadState, enhancer) => {
+  let store = createStore(reducer, preloadState, enhancer);
   let dispatch = store.dispatch;
+  let chain = [];
   let middlewareAPI = {
     getState: store.getState,
     dispatch: action => dispatch(action)
   };
-  middlewares = middlewares.map(middleware => middleware(middlewareAPI));
-  dispatch = compose(...middlewares)(store.dispatch);
+  chain = middlewares.map(middleware => middleware(middlewareAPI));
+  dispatch = compose(...chain)(store.dispatch);
   return {
     ...store,
     dispatch

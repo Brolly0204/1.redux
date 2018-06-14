@@ -1,8 +1,14 @@
-function compose(...fns) {
-  return (args) => fns.reduceRight((prev, fn) => fn(prev), args);
+export default function (...funcs) {
+  if (funcs.length === 0) {
+    return arg => arg
+  }
+
+  if (funcs.length === 1) {
+    return funcs[0]
+  }
+  return funcs.reduce((a, b) => (...args) => a(b(...args)))
 }
 
- export default compose;
 // function add1(str) {
 //   return str + 1;
 // }
